@@ -1,7 +1,7 @@
 plugins {
     java
-    id("com.github.johnrengelman.shadow") version ("8.1.1")
-    id("io.papermc.paperweight.userdev") version ("1.7.1")
+    id("io.github.goooler.shadow") version ("8.1.8")
+    id("io.papermc.paperweight.userdev") version "1.7.2"
 }
 
 repositories {
@@ -44,7 +44,7 @@ repositories {
     }
     maven {
         name = "jeff-media-repo"
-        url = uri("https://hub.jeff-media.com/nexus/repository/jeff-media-public/")
+        url = uri("https://repo.jeff-media.com/public/")
     }
     maven {
         name = "skript-repo"
@@ -75,7 +75,7 @@ repositories {
 
 dependencies {
     //compileOnly("io.papermc.paper:paper-api:1.20.4-R0.1-SNAPSHOT")
-    paperweight.paperDevBundle("1.20.4-R0.1-SNAPSHOT")
+    paperweight.paperDevBundle("1.21-R0.1-SNAPSHOT")
 
     implementation("org.bstats:bstats-bukkit:3.0.0")
     compileOnly("com.github.puregero:multilib:1.1.5")
@@ -89,7 +89,7 @@ dependencies {
     compileOnly("com.sk89q.worldguard:worldguard-bukkit:7.0.7-SNAPSHOT")
     compileOnly("com.palmergames.bukkit.towny:towny:0.98.1.12")
     compileOnly("de.jeff_media:ChestSortAPI:13.0.0-SNAPSHOT")
-    compileOnly("me.clip:placeholderapi:2.11.1")
+    //compileOnly("me.clip:placeholderapi:2.11.6")
     compileOnly("com.griefdefender:api:2.0.0-20210822.184639-9")
     compileOnly("com.github.SkriptLang:Skript:2.6.1")
     compileOnly("com.github.xerial:sqlite-jdbc:3.36.0.3")
@@ -102,8 +102,10 @@ dependencies {
 }
 
 java {
-    toolchain.languageVersion.set(JavaLanguageVersion.of(17))
+    toolchain.languageVersion.set(JavaLanguageVersion.of(21))
 }
+
+paperweight.reobfArtifactConfiguration = io.papermc.paperweight.userdev.ReobfArtifactConfiguration.MOJANG_PRODUCTION
 
 tasks {
     processResources {
@@ -116,11 +118,11 @@ tasks {
     }
 
     compileJava {
-        options.encoding = "UTF-8"
+        options.release = 21
     }
 
-    assemble {
-        dependsOn(reobfJar)
+    javadoc {
+        options.encoding = Charsets.UTF_8.name() // We want UTF-8 for everything
     }
 
     shadowJar {
